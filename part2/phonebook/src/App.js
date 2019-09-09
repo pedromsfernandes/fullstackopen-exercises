@@ -105,17 +105,14 @@ const App = () => {
 
           addNotification(`Updated ${updatedPerson.name}`, "warning");
         })
-        .catch(() =>
-          addNotification(
-            `Information of ${newName} has already been removed from server`,
-            "error"
-          )
-        );
+        .catch(error => addNotification(error.response.data.error, "error"));
     } else if (person === undefined) {
-      createPerson({ name: newName, number: newNumber }).then(newPerson => {
-        setPersons(persons.concat(newPerson));
-        addNotification(`Added ${newPerson.name}`, "success");
-      });
+      createPerson({ name: newName, number: newNumber })
+        .then(newPerson => {
+          setPersons(persons.concat(newPerson));
+          addNotification(`Added ${newPerson.name}`, "success");
+        })
+        .catch(error => addNotification(error.response.data.error, "error"));
     }
   };
 
@@ -126,12 +123,7 @@ const App = () => {
           setPersons(persons.filter(person => person.id !== personToDelete.id));
           addNotification(`Deleted ${personToDelete.name}`, "error");
         })
-        .catch(() =>
-          addNotification(
-            `Information of ${personToDelete.name} has already been removed from server`,
-            "error"
-          )
-        );
+        .catch(error => addNotification(error.response.data.error, "error"));
   };
 
   return (
