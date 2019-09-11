@@ -29,10 +29,11 @@ blogsRouter.post("/", async (request, response, next) => {
       user: user._id
     });
 
-    const result = await blog.save();
+    const result = await Blog.create(blog)
     user.blogs = user.blogs.concat(result._id);
     await user.save();
-    response.status(201).json(result.toJSON());
+    const populated = await result.populate("user", { username: 1, name: 1 }).execPopulate()
+    response.status(201).json(populated.toJSON());
   } catch (e) {
     next(e);
   }

@@ -10,7 +10,7 @@ usersRouter.get("/", async (request, response) => {
   });
 
   response.json(users.map(user => user.toJSON()));
-});
+}); 
 
 usersRouter.post("/", async (request, response, next) => {
   try {
